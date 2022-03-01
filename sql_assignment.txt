@@ -1,0 +1,91 @@
+create table department(
+department_id int primary key,
+department_name varchar(30)
+);
+create table locations(
+location_id int primary key,
+location_name varchar(30)
+);
+create table employee(
+emp_id int primary key,
+employee_name varchar(30),
+department_id int,
+location_id int,
+salary int
+);
+ALTER TABLE employee
+ADD FOREIGN KEY(department_id)
+REFERENCES department(department_id);
+ALTER TABLE employee
+ADD FOREIGN KEY(location_id)
+REFERENCES locations(location_id);
+
+
+
+INSERT INTO locations
+VALUES(10,'JOBS')
+INSERT INTO locations
+VALUES(12,'BUSSINESS')
+
+
+
+
+INSERT INTO department
+VALUES(50,'ENGINEERING')
+INSERT INTO department
+VALUES(60,'LABOUR')
+INSERT INTO department
+VALUES(70,'MANAGEMENT')
+INSERT INTO department
+VALUES(80,'CONSTRUCTION')
+
+
+
+
+INSERT INTO employee
+VALUES(807,'Hritik',50,10,57000)
+INSERT INTO employee
+VALUES(808,'Akbal',60,10,35000)
+INSERT INTO employee
+VALUES(821,'Ram',50,12,41000)
+INSERT INTO employee
+VALUES(814,'Shyam',70,10,28000)
+INSERT INTO employee
+VALUES(817,'Leena',60,12,92000)
+INSERT INTO employee
+VALUES(819,'Mohan',80,10,46000)
+INSERT INTO employee
+VALUES(820,'Rampal',80,10,42000)
+
+
+
+
+SELECT e.employee_name,d.department_name
+FROM employee e
+LEFT JOIN department d
+ON e.department_id = d.department_id;
+
+
+
+SELECT e.employee_name, d.department_name, l.location_name, e.salary
+FROM employee e
+LEFT JOIN department d
+ON e.department_id = d.department_id
+LEFT JOIN locations l
+ON e.location_id = l.location_id;
+
+
+
+select d.department_id, max(e.salary) from
+department d inner join employee e on d.department_id = e.department_id
+group by d.department_id;
+
+
+
+select t.department_id, max(t.salary) as maxs
+from employee t
+where t.salary < (select max(salary)
+from employee t2
+where t2.department_id = t.department_id
+)
+group by t.department_id;
